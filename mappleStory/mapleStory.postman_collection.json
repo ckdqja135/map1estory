@@ -1,0 +1,257 @@
+{
+	"info": {
+		"_postman_id": "182e041d-b7df-4438-b6aa-467d5d4b931c",
+		"name": "mapleStory",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10952307"
+	},
+	"item": [
+		{
+			"name": "auth Server",
+			"item": [
+				{
+					"name": "사용자 등록",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"admin3\",\r\n  \"password\": \"123456\",\r\n  \"email\": \"admin3@test.com\",\r\n  \"fullName\": \"fulltest\",\r\n  \"roles\": [\"OPERATOR\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4001/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4001",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "로그인",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4001/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4001",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "event Server",
+			"item": [
+				{
+					"name": "이벤트 생성",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ODI4N2M1NTM1MWVhYjg5ZmE1MzZhZDYiLCJ1c2VybmFtZSI6ImFkbWluIiwicm9sZXMiOlsiT1BFUkFUT1IiXSwiaWF0IjoxNzQ3NTQ4MDQ5LCJleHAiOjE3NDc2MzQ0NDl9.KC-z-rztUNHshye2-ox2cFINScbx0vAUq-Rmk1ReAzE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"로그인 출석 이벤트\",\r\n  \"description\": \"3일 연속 로그인 보상\",\r\n  \"startDate\": \"2023-10-10T00:00:00.000Z\",\r\n  \"endDate\": \"2023-10-20T23:59:59.999Z\",\r\n  \"conditions\": {\r\n    \"loginDays\": 3\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4003/api/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4003",
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "모든 이벤트 조회",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4003/api/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4003",
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "특정 이벤트 조회",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ODI4N2M1NTM1MWVhYjg5ZmE1MzZhZDYiLCJ1c2VybmFtZSI6ImFkbWluIiwicm9sZXMiOlsiT1BFUkFUT1IiXSwiaWF0IjoxNzQ3NDg1Mjc5LCJleHAiOjE3NDc1NzE2Nzl9.ieisV0j33aSCppVH4jQ_C6qPutssxg6kTQ3EEDXItMU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http:/localhost:4003/api/events/:id",
+							"host": [
+								"http"
+							],
+							"port": "",
+							"path": [
+								"localhost:4003",
+								"api",
+								"events",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "보상 생성",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ODI4N2M1NTM1MWVhYjg5ZmE1MzZhZDYiLCJ1c2VybmFtZSI6ImFkbWluIiwicm9sZXMiOlsiT1BFUkFUT1IiXSwiaWF0IjoxNzQ3NDg1Mjc5LCJleHAiOjE3NDc1NzE2Nzl9.ieisV0j33aSCppVH4jQ_C6qPutssxg6kTQ3EEDXItMU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"가입 포인트\",\r\n  \"description\": \"신규 가입자 환영 포인트\",\r\n  \"type\": \"POINT\",\r\n  \"quantity\": 1000,\r\n  \"eventId\": \"6828776730273b85585f8174\",\r\n  \"metadata\": {\r\n    \"expiryDays\": 30\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4003/api/rewards",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4003",
+							"path": [
+								"api",
+								"rewards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "보상 조회",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ODI4N2M1NTM1MWVhYjg5ZmE1MzZhZDYiLCJ1c2VybmFtZSI6ImFkbWluIiwicm9sZXMiOlsiT1BFUkFUT1IiXSwiaWF0IjoxNzQ3NDg1Mjc5LCJleHAiOjE3NDc1NzE2Nzl9.ieisV0j33aSCppVH4jQ_C6qPutssxg6kTQ3EEDXItMU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"가입 포인트\",\r\n  \"description\": \"신규 가입자 환영 포인트\",\r\n  \"type\": \"POINT\",\r\n  \"quantity\": 1000,\r\n  \"eventId\": \"6828776730273b85585f8174\",\r\n  \"metadata\": {\r\n    \"expiryDays\": 30\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4003/api/rewards",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4003",
+							"path": [
+								"api",
+								"rewards"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

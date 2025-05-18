@@ -1,0 +1,113 @@
+version: '3.8'
+
+# 이벤트 보상 시스템 마이크로서비스 아키텍처
+services:
+  # Gateway 서버 - API 게이트웨이 역할 (포트: 4000)
+  gateway-server:
+    build:
+      context: ./gateway-server
+      dockerfile: Dockerfile
+    container_name: mapple-gateway
+    restart: always
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=development
+      - PORT=4000
+      - AUTH_SERVICE_URL=http://auth-server:4001
+      - EVENT_SERVICE_URL=http://event-server:4003
+      - JWT_SECRET=your_secure_jwt_secret_key_here
+      - JWT_EXPIRES_IN=1d
+    depends_on:
+      - auth-server
+      - event-server
+    networks:
+      - mapple-network
+
+  # Auth 서버 - 인증 및 사용자 관리 (포트: 4001)
+  auth-server:
+    build:
+      context: ./auth-server
+      dockerfile: Dockerfile
+    container_name: mapple-auth
+    restart: always
+    ports:
+      - "4001:4001"
+    environment:
+      - NODE_ENV=development
+      - PORT=4001
+      - JWT_SECRET=your_secure_jwt_secret_key_here
+      - JWT_EXPIRES_IN=1d
+      - MONGODB_URI=mongodb://mongodb-auth:27017/auth-service
+    depends_on:
+      - mongodb-auth
+    networks:
+      - mapple-network
+
+  # Event 서버 - 이벤트 및 보상 관리 (포트: 4003)
+  event-server:
+    build:
+      context: ./event-server
+      dockerfile: Dockerfile
+    container_name: mapple-event
+    restart: always
+    ports:
+      - "4003:4003"
+    environment:
+      - NODE_ENV=development
+      - PORT=4003
+      - JWT_SECRET=your_secure_jwt_secret_key_here
+      - MONGODB_URI=mongodb://mongodb-event:27017/event-service
+    depends_on:
+      - mongodb-event
+    networks:
+      - mapple-network
+
+  # Auth 서비스용 MongoDB (포트: 4017)
+  mongodb-auth:
+    image: mongo:latest
+    container_name: mapple-mongodb-auth
+    ports:
+      - "4017:27017"
+    volumes:
+      - ./data/mongodb-auth:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=auth-service
+    networks:
+      - mapple-network
+
+  # Event 서비스용 MongoDB (포트: 4018)
+  mongodb-event:
+    image: mongo:latest
+    container_name: mapple-mongodb-event
+    ports:
+      - "4018:27017"
+    volumes:
+      - ./data/mongodb-event:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=event-service
+    networks:
+      - mapple-network
+
+  # MongoDB 관리자 UI (포트: 4081)
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mapple-mongo-express
+    restart: always
+    ports:
+      - "4081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb-auth
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=password
+    depends_on:
+      - mongodb-auth
+      - mongodb-event
+    networks:
+      - mapple-network
+
+# 네트워크 설정 - 마이크로서비스 간 통신
+networks:
+  mapple-network:
+    driver: bridge 
