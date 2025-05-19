@@ -183,6 +183,11 @@ docker-compose logs -f gateway-server
 docker-compose logs -f auth-server
 docker-compose logs -f event-server
 
+# 특정 컨테이너 접속
+docker exec -it mapple-gateway sh 
+docker exec -it mapple-event sh 
+docker exec -it mapple-auth sh 
+
 # 모든 서비스 중지
 docker-compose down
 ```
